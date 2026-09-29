@@ -1,8 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
 
-export const cloudEnabled = Boolean(import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY);
+// Supabase publishable credentials are intentionally public client configuration.
+// The database uses row-level security and a private photo bucket to protect user data.
+// Vercel VITE_ environment variables take precedence if set.
+const cloudUrl = import.meta.env.VITE_SUPABASE_URL || 'https://mhhcbbpungjmytrnkpic.supabase.co';
+const cloudPublishableKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_50qzbB6isAAcYksWD3gLxw_IyGGqxbb';
+export const cloudEnabled = Boolean(cloudUrl && cloudPublishableKey);
 export const supabase = cloudEnabled
-  ? createClient(import.meta.env.VITE_SUPABASE_URL as string, import.meta.env.VITE_SUPABASE_ANON_KEY as string, {
+  ? createClient(cloudUrl, cloudPublishableKey, {
       auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true },
     })
   : null;
