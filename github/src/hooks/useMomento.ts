@@ -66,7 +66,7 @@ export function useMomento() {
   }
   async function signUp(email:string,password:string,name:string) {
     if(!supabase) throw new Error('Cloud accounts are not configured. Add your Supabase keys.');
-    const {data,error:authError}=await supabase.auth.signUp({email,password,options:{data:{display_name:name}}});
+    const {data,error:authError}=await supabase.auth.signUp({email,password,options:{data:{display_name:name},emailRedirectTo:window.location.origin}});
     if(authError)throw authError;
     return {confirmEmail:!data.session};
   }
