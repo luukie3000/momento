@@ -1,2 +1,6 @@
 import Hero from '@/components/Hero';
-export default function App() { return <div><Hero /></div>; }
+import { Analytics } from '@vercel/analytics/react';
+
+export default function App() {
+  return <div><Hero /><Analytics /></div>;
+}
