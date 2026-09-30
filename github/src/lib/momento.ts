@@ -217,10 +217,12 @@ export async function deleteCloudMemory(userId:string,memory:Memory) {
   if(error) throw error;
   if(paths.length) { const {error:storageError}=await client.storage.from(BUCKET).remove(paths); if(storageError) console.warn('Old photo cleanup pending:',storageError.message); }
 }
-export async function importGuestMemories(userId:string,guest:Memory[],progress:(done:number,total:number)=>void):Promise<number> {
+export async function importGuestMemories(userId:string,guest:Memory[],progress:(done:number,total:number)=>void,onCreated?:(memory:Memory)=>void):Promise<number> {
   let imported=0;
   for(const memory of guest) {
-    await createCloudMemory(userId,{title:memory.title,text:memory.text,date:memory.date,location:memory.location,photos:memory.photos.map(p=>({...p,path:undefined}))});
+    const saved=await createCloudMemory(userId,{title:memory.title,text:memory.text,date:memory.date,location:memory.location,photos:memory.photos.map(p=>({...p,path:undefined}))});
+    // Optional observer must never interrupt an import or prevent local cleanup.
+    try {onCreated?.(saved);} catch { /* Observability is best effort. */ }
     await deleteLocal(memory.id); imported++; progress(imported,guest.length);
   }
   return imported;

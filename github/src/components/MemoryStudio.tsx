@@ -2,6 +2,7 @@ import { useEffect,useRef,useState,type ChangeEvent,type FormEvent } from 'react
 import { ArrowLeft, ArrowRight, CalendarDays, Camera, Check, Cloud, Edit3, ImagePlus, MapPin, Search, Trash2, UploadCloud, X } from 'lucide-react';
 import { photoFromFile, type Memory, type MemoryDraft, type Photo } from '../lib/momento';
 import type { MomentoStore } from '../hooks/useMomento';
+import { trackEvent } from '../lib/analytics';
 
 type View = 'list'|'detail'|'editor';
 const readableDate=(s:string)=>new Date(s+'T12:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
@@ -19,8 +20,15 @@ export default function MemoryStudio({store,onClose,onAuth,initial='list'}:{stor
   const [saving,setSaving]=useState(false);
   const uploadRef=useRef<HTMLInputElement>(null);
   const closeRef=useRef<HTMLButtonElement>(null);
+  const initialEditorTracked=useRef(false);
   useEffect(()=>{closeRef.current?.focus();},[]);
-  const openEditor=(m?:Memory)=>{setSelection(m||null);setDraft(initialDraft(m,store.dateToday()));setProblem('');setView('editor');};
+  useEffect(()=>{
+    if(initial==='editor'&&!initialEditorTracked.current){
+      initialEditorTracked.current=true;
+      trackEvent('memory_editor_opened',{source:'journal',mode:store.user?'cloud':'guest'});
+    }
+  },[initial,store.user]);
+  const openEditor=(m?:Memory)=>{trackEvent('memory_editor_opened',{source:m?'memory_detail':'journal',mode:store.user?'cloud':'guest'});setSelection(m||null);setDraft(initialDraft(m,store.dateToday()));setProblem('');setView('editor');};
   const filtered=store.memories.filter(m=>{
     if(photosOnly&&!m.photos.length)return false;
     return [m.title,m.text,m.location,m.date].join(' ').toLowerCase().includes(query.trim().toLowerCase());
