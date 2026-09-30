@@ -1,0 +1,176 @@
+/* Editorial homepage refinements; journal dialogs retain their own styles. */
+.taste-page { width: 100%; max-width: 100%; overflow-x: hidden; }
+.taste-page h1, .taste-page h2, .taste-page h3 {
+  font-family: 'Cabinet Grotesk', 'Geist', sans-serif;
+  font-weight: 500;
+}
+.taste-page h2 em, .taste-page .end-inner h2 em {
+  font-family: 'Special Elite', 'Courier New', monospace;
+  font-weight: 400;
+  color: #935d3d;
+}
+.taste-page [data-reveal] { opacity: 1; transform: none; transition: none; }
+.taste-page .section-shell { max-width: 1312px; padding-inline: clamp(24px, 4.8vw, 72px); }
+.taste-page .hero-scene { min-height: max(900px, 100svh); }
+.taste-page .hero-wash {
+  background: linear-gradient(180deg, #faf7efed 0%, #faf7efe0 22%, #faf7ef85 49%, #faf7ef00 80%);
+}
+.taste-page .top-nav { padding: 30px clamp(24px, 4vw, 64px); gap: 30px; border-bottom: 1px solid #3b302815; }
+.taste-page .nav-actions { gap: 22px; }
+.taste-page .nav-middle { position: static; transform: none; gap: 24px; margin-left: auto; }
+.taste-page .hero-content { padding: 50px 24px 176px; }
+.taste-page .hero-content h1 {
+  max-width: 1152px; font-size: clamp(60px, 7.2vw, 104px);
+  line-height: .98; letter-spacing: -.045em; margin-bottom: 24px;
+}
+.taste-page .hero-heading-break { display: block; }
+.taste-page .hero-subtitle { color: #4e4a40; font-size: 16px; font-weight: 400; max-width: 590px; margin-bottom: 24px; }
+.taste-hero-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
+.taste-start, .taste-secondary { min-height: 48px; padding: 15px 24px; font-size: 11px; font-weight: 600; letter-spacing: .03em; }
+.taste-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 12px; border: 1px solid #80725d66; border-radius: 99px; color: #28271f; background: #faf7efe6; transition: background .25s, transform .25s; }
+.taste-secondary:hover { background: #fffdf6; transform: translateY(-2px); }
+.taste-page .prompt-glass { width: min(660px, 100%); min-height: 175px; border: 1px solid #b4a28a99; border-radius: 26px; background: #fbf7eceb; backdrop-filter: blur(8px); box-shadow: 0 12px 35px #3228180d; }
+.taste-page .prompt-glass textarea { height: 105px; padding: 22px 24px 6px; font-size: 16px; color: #77442d; }
+.taste-page .prompt-glass textarea::placeholder { color: #81563f; }
+.taste-page .prompt-glass textarea:focus-visible { outline: 2px solid #985d39; outline-offset: -6px; border-radius: 24px 24px 0 0; }
+.taste-page .hint-text { color: #615947; }
+.taste-page .upload-circle { background: #efe6d7; border-color: #c3b29a; }
+.taste-page .save-button { min-height: 42px; }
+.taste-ambient-toggle { position: absolute; right: 64px; bottom: 58px; z-index: 5; color: #2c2922; background: #faf7efd9; border: 1px solid #76665055; border-radius: 30px; padding: 8px 12px; font-size: 9px; letter-spacing: .06em; }
+.ambient-paused .cloud, .ambient-paused .birds { animation-play-state: paused; }
+.taste-intro { padding: clamp(110px, 12vw, 180px) 0; text-align: center; }
+.taste-intro h2 { font-size: clamp(48px, 5.3vw, 78px); line-height: 1.12; letter-spacing: -.04em; max-width: 1120px; margin: 0 auto 44px; }
+.taste-inline-image { display: inline-block; vertical-align: middle; width: clamp(100px, 12vw, 170px); height: clamp(52px, 6vw, 80px); border-radius: 99px; overflow: hidden; border: 1px solid #c8b89d; margin: 0 .08em; transform: rotate(-5deg); }
+.taste-inline-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s ease; }
+.taste-inline-image:hover img { transform: scale(1.08); }
+.taste-remembering { max-width: 840px; margin: 0 auto 32px; font-family: 'Cabinet Grotesk', 'Geist', sans-serif; font-size: clamp(22px, 2.5vw, 34px); line-height: 1.55; color: #3c3c30; letter-spacing: -.02em; }
+.taste-remembering [data-word] { display: inline; }
+.taste-features { padding: 16px 0 clamp(110px, 12vw, 176px); }
+.taste-feature-heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 50px; margin-bottom: 48px; }
+.taste-feature-heading h2 { font-size: clamp(48px, 5.5vw, 78px); line-height: 1.06; letter-spacing: -.045em; margin: 0; }
+.taste-feature-heading > p { max-width: 300px; color: #625c50; font-size: 16px; line-height: 1.75; margin: 0 0 6px; }
+.taste-bento { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(2, minmax(308px, auto)); grid-auto-flow: dense; gap: 20px; }
+.taste-feature { overflow: hidden; position: relative; background: #f5eddf; border: 1px solid #d6c9b5; border-radius: 22px; }
+.taste-feature-main { grid-row: span 2; display: flex; flex-direction: column; }
+.taste-feature-art { overflow: hidden; }
+.taste-feature-art img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(.2,.75,.25,1); }
+.taste-feature:hover .taste-feature-art img { transform: scale(1.045); }
+.taste-feature-main .taste-feature-art { flex: 1; min-height: 350px; }
+.taste-feature-main .taste-feature-art img { height: 100%; min-height: 350px; }
+.taste-feature-copy { padding: 28px 32px; }
+.taste-feature-copy h3 { font-size: 34px; line-height: 1.08; letter-spacing: -.035em; margin: 0 0 12px; }
+.taste-feature-copy p { font-size: 14px; line-height: 1.75; color: #625a4b; margin: 0; max-width: 390px; }
+.taste-feature-words { background: #e9e7d5; display: flex; flex-direction: column; justify-content: space-between; }
+.taste-written-note { margin: 30px 32px 0; padding: 4px 0; font: 20px/1.6 'Special Elite', 'Courier New', monospace; color: #6a6149; background: repeating-linear-gradient(transparent 0 31px, #87826536 31px 32px); transform: rotate(-2deg); }
+.taste-feature-revisit { display: grid; grid-template-columns: 42% 58%; align-items: center; background: #e6ded0; }
+.taste-feature-revisit .taste-feature-art { height: 100%; min-height: 308px; }
+.taste-feature-revisit .taste-feature-copy { padding: 26px; }
+.taste-feature-revisit h3 { font-size: 32px; }
+.taste-page .illustrated-stories { padding: clamp(110px, 12vw, 176px) 0; }
+.taste-page .illustrated-header { max-width: 760px; margin: 0 auto 72px; text-align: center; }
+.taste-page .illustrated-header .eyebrow { display: none; }
+.taste-page .illustrated-header h2 { font-size: clamp(48px, 5.5vw, 78px); line-height: 1.08; letter-spacing: -.04em; margin: 0 0 22px; }
+.taste-page .illustrated-header p { color: #625a4b; line-height: 1.75; }
+[data-story-stack] { position: relative; }
+.taste-page .living-row { margin: 0 0 36px; min-height: 480px; display: grid; grid-template-columns: 54% 46%; gap: 0; padding: 14px; border: 1px solid #cbbc9f; border-radius: 24px; background: #f0e8d7 url('/parchment-tile.jpg') repeat; box-shadow: 0 16px 30px #3a29140d; transform-origin: center top; }
+.taste-page .living-row:last-child { margin-bottom: 0; }
+.taste-page .living-row .living-media { height: 100%; min-height: 450px; border-radius: 14px; border: 0; aspect-ratio: auto; }
+.taste-page .living-row .living-art { height: 100%; width: 100%; object-fit: cover; }
+.taste-page .living-row .living-copy { max-width: none; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+.taste-page .living-reverse .living-media { grid-column: 1; grid-row: 1; }
+.taste-page .living-reverse .living-copy { grid-column: 2; grid-row: 1; }
+.taste-page .living-reverse .living-media, .taste-page .living-reverse .living-copy { order: initial; }
+.taste-page .living-index { font: 11px 'Geist', sans-serif; color: #6c604b; letter-spacing: .12em; margin-bottom: 24px; }
+.taste-page .living-copy h3 { font-size: clamp(36px, 4.2vw, 60px); line-height: 1.08; letter-spacing: -.04em; margin: 0 0 22px; }
+.taste-page .living-copy p { color: #625a4b; max-width: 300px; font-size: 15px; line-height: 1.75; }
+.taste-page .living-note { font-size: 10px; color: #806049; margin-top: 30px; }
+.taste-page .print-label { bottom: 14px; left: 16px; font-size: 10px; background: #f9f4e5e8; color: #5e4b35; }
+.taste-page .how-section { padding: clamp(100px, 12vw, 160px) 0; }
+.taste-page .how-layout { gap: 80px; }
+.taste-page .how-copy h2 { font-size: clamp(46px, 4.8vw, 68px); line-height: 1.09; }
+.taste-page .eyebrow { color: #72533c; font-size: 10px; }
+.taste-page .end-section { padding-block: 120px; }
+.taste-page .end-inner h2 { font-size: clamp(52px, 5.8vw, 84px); line-height: 1.07; letter-spacing: -.045em; }
+.taste-page .end-star { display: none; }
+.taste-page .end-inner .eyebrow { margin-top: 0; }
+.taste-page .end-cta { min-height: 54px; padding-inline: 28px; }
+.taste-page .beta-section { padding: 120px 0; }
+.taste-page .beta-section h2 { font-size: clamp(42px, 4.5vw, 62px); line-height: 1.1; letter-spacing: -.04em; }
+.taste-page .beta-roadmap > div { padding-left: 0; grid-template-columns: 1fr 24px; }
+.taste-page .beta-roadmap strong, .taste-page .beta-roadmap small { grid-column: 1; }
+.taste-page .beta-roadmap svg { grid-column: 2; grid-row: 1 / span 2; }
+.taste-page .beta-launch-note { color: #6f604c; }
+@media (max-width: 1200px) {
+  .taste-page .nav-middle { display: none; }
+  .taste-page .living-row .living-copy { padding: 28px; }
+}
+@media (max-width: 899px) {
+  .taste-page .hero-content h1 { font-size: clamp(54px, 9vw, 80px); }
+  .taste-page .how-layout { gap: 36px; }
+  .taste-page .living-row { min-height: 360px; }
+  .taste-page .living-row .living-media { min-height: 330px; }
+  .taste-feature-copy { padding: 24px; }
+  .taste-feature-copy h3 { font-size: 29px; }
+  .taste-feature-revisit { grid-template-columns: 1fr; }
+  .taste-feature-revisit .taste-feature-art { min-height: 150px; max-height: 160px; }
+}
+@media (max-width: 650px) {
+  .taste-page .top-nav { padding: 24px; }
+  .taste-page .nav-actions { gap: 16px; }
+  .taste-page .hero-scene { min-height: max(840px, 100svh); }
+  .taste-page .hero-content { padding: 35px 24px 160px; }
+  .taste-page .hero-content h1 { font-size: clamp(46px, 12vw, 70px); letter-spacing: -.04em; line-height: 1.04; margin-bottom: 20px; }
+  .taste-page .hero-subtitle { font-size: 14px; line-height: 1.65; margin-bottom: 22px; }
+  .taste-hero-actions { width: 100%; gap: 8px; flex-wrap: nowrap; margin-bottom: 24px; }
+  .taste-start, .taste-secondary { padding: 13px 14px; font-size: 9px; gap: 8px; flex: 1 1 0; min-width: 0; min-height: 46px; }
+  .taste-page .prompt-glass { border-radius: 22px; min-height: 176px; }
+  .taste-page .prompt-glass textarea { padding: 18px 18px 5px; font-size: 14px; height: 114px; }
+  .taste-page .prompt-bottom { padding: 0 12px 12px; gap: 6px; }
+  .taste-page .upload-circle { width: 36px; height: 36px; }
+  .taste-page .save-button { padding-inline: 14px; min-height: 40px; font-size: 9px; }
+  .taste-page .hint-text { display: none; }
+  .taste-ambient-toggle { right: 24px; bottom: 58px; }
+  .taste-page .hero-bottom-text { left: 24px; bottom: 25px; font-size: 8px; }
+  .taste-page .scroll-cue { right: 24px; bottom: 25px; font-size: 8px; }
+  .taste-intro { padding: 100px 0; }
+  .taste-intro h2 { font-size: clamp(38px, 10vw, 54px); line-height: 1.18; margin-bottom: 30px; }
+  .taste-inline-image { width: 100px; height: 50px; }
+  .taste-remembering { font-size: 23px; line-height: 1.6; }
+  .taste-features { padding-bottom: 100px; }
+  .taste-feature-heading { display: block; margin-bottom: 32px; }
+  .taste-feature-heading h2 { font-size: 48px; }
+  .taste-feature-heading > p { margin-top: 24px; max-width: 100%; }
+  .taste-bento { grid-template-columns: 1fr; grid-template-rows: none; gap: 16px; }
+  .taste-feature-main { grid-row: auto; }
+  .taste-feature-main .taste-feature-art, .taste-feature-main .taste-feature-art img { min-height: 0; height: 300px; }
+  .taste-written-note { margin: 28px 24px 8px; font-size: 18px; }
+  .taste-feature-revisit { grid-template-columns: 1fr; }
+  .taste-feature-revisit .taste-feature-art { max-height: none; height: 210px; }
+  .taste-feature-copy { padding: 26px; }
+  .taste-feature-copy h3 { font-size: 32px; }
+  .taste-page .illustrated-stories { padding: 100px 0; }
+  .taste-page .illustrated-header { margin-bottom: 40px; }
+  .taste-page .illustrated-header h2 { font-size: 46px; }
+  .taste-page .living-row { display: block; padding: 10px; margin-bottom: 20px; border-radius: 20px; }
+  .taste-page .living-row .living-media { height: 260px; min-height: 0; }
+  .taste-page .living-row .living-copy { padding: 28px 18px; }
+  .taste-page .living-copy h3 { font-size: 40px; }
+  .taste-page .living-note { margin-top: 18px; }
+  .taste-page .how-layout { display: flex; flex-direction: column; gap: 30px; }
+  .taste-page .how-art { width: 100%; height: 440px; }
+  .taste-page .how-copy { width: 100%; }
+  .taste-page .how-copy h2 { font-size: 46px; }
+  .taste-page .end-section { padding: 100px 0 160px; }
+  .taste-page .end-inner h2 { font-size: 46px; }
+  .taste-page .beta-section { padding: 90px 0; }
+}
+@media (max-width: 360px) {
+  .taste-page .nav-add { display: none; }
+  .taste-hero-actions { flex-direction: column; }
+  .taste-start, .taste-secondary { width: 100%; font-size: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .taste-page *, .taste-page *::before, .taste-page *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .taste-page [data-reveal], .taste-page [data-word] { opacity: 1 !important; visibility: visible !important; }
+  .taste-feature:hover img, .taste-inline-image:hover img { transform: none; }
+}
