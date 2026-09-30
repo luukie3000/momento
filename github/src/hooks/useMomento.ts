@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import type { User } from '@supabase/supabase-js';
 import { supabase, cloudEnabled, dateToday, getLocalMemories, saveLocal, deleteLocal, loadCloudMemories, createCloudMemory, updateCloudMemory, deleteCloudMemory, importGuestMemories, type Memory, type MemoryDraft } from '../lib/momento';
 import { trackEvent, rememberGuestMemory, recordMemoryCreated, type AnalyticsSource } from '../lib/analytics';
+import { firstMemoryState } from '../lib/first-memory';
 export type Profile = {display_name:string;bio:string};
 function uuid() {return typeof crypto.randomUUID==='function'?crypto.randomUUID():'10000000-1000-4000-8000-100000000000'.replace(/[018]/g,c=>(Number(c)^(crypto.getRandomValues(new Uint8Array(1))[0]&(15>>(Number(c)/4)))).toString(16));}
 export function useMomento() {
@@ -12,11 +13,12 @@ export function useMomento() {
   const [profile,setProfile]=useState<Profile>({display_name:'',bio:''});
   const [loading,setLoading]=useState(false);
   const [error,setError]=useState('');
+  const [loadedJournalFor,setLoadedJournalFor]=useState<string|null>(null);
   const refresh=useCallback(async (account:User|null) => {
     setLoading(true);setError('');
     try {
       const local=await getLocalMemories();setDrafts(local);
-      if(local.length>0)rememberGuestMemory();
+      if(local.length>0){rememberGuestMemory();firstMemoryState.remember();}
       if (account && supabase) {
         const [remote,profileResult]=await Promise.all([
           loadCloudMemories(account.id),
@@ -24,10 +26,11 @@ export function useMomento() {
         ]);
         if(profileResult.error) throw profileResult.error;
         setMemories(remote);
+        if(remote.length>0)firstMemoryState.remember(account.id);
         setProfile({display_name:profileResult.data?.display_name || account.user_metadata?.display_name || '',bio:profileResult.data?.bio || ''});
       } else {setMemories(local);setProfile({display_name:'',bio:''});}
     } catch(e) {setError(e instanceof Error?e.message:'Could not load your journal.');}
-    finally {setLoading(false);}
+    finally {setLoadedJournalFor(account?.id||'guest');setLoading(false);}
   },[]);
   useEffect(()=>{
     let alive=true;
@@ -50,6 +53,7 @@ export function useMomento() {
         result={id:current?.id || uuid(),...draft,createdAt:current?.createdAt||new Date().toISOString()};
         await saveLocal(result);
       }
+      firstMemoryState.remember(user?.id);
       setMemories(old=>[result,...old.filter(m=>m.id!==result.id)].sort((a,b)=>b.date.localeCompare(a.date)));
       if(!user)setDrafts(old=>[result,...old.filter(m=>m.id!==result.id)]);
       const mode=user?'cloud':'guest';
@@ -107,6 +111,7 @@ export function useMomento() {
     trackEvent('guest_memories_import_started',{source:'account',mode:'cloud',memory_count:drafts.length});
     let created=0;
     try {const total=await importGuestMemories(user.id,drafts,onProgress,memory=>{
+      firstMemoryState.remember(user.id);
       recordMemoryCreated({mode:'cloud',photoCount:memory.photos.length,source:'import',memoryId:memory.id,userId:user.id,hadMemories:memories.length+created>0});created++;
     });await refresh(user);
       trackEvent('guest_memories_import_completed',{source:'account',mode:'cloud',memory_count:total});
@@ -119,6 +124,10 @@ export function useMomento() {
     if(dbError)throw dbError;
     trackEvent('beta_feedback_submitted',{source:'beta',mode:'cloud'});
   }
-  return {user,ready,cloudEnabled,memories,drafts,profile,loading,error,clearError:()=>setError(''),refresh:()=>refresh(user),save,remove,signUp,signIn,signOut,updateProfile,importDrafts,feedback,dateToday};
+  const journalReady=ready&&!loading&&loadedJournalFor===(user?.id||'guest');
+  const canGuideFirstMemory=journalReady&&!error&&
+    memories.length===0&&drafts.length===0&&!firstMemoryState.has(user?.id)&&
+    (!user||!firstMemoryState.has());
+  return {user,ready,journalReady,cloudEnabled,memories,drafts,profile,loading,error,canGuideFirstMemory,clearError:()=>setError(''),refresh:()=>refresh(user),save,remove,signUp,signIn,signOut,updateProfile,importDrafts,feedback,dateToday};
 }
 export type MomentoStore=ReturnType<typeof useMomento>;

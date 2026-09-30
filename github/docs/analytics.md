@@ -21,7 +21,7 @@ are captured. The first touch persists, including a direct first visit.
 | Event | When it fires |
 | --- | --- |
 | `page_view` | Once per loaded page, including refreshes; React StrictMode does not duplicate it |
-| `hero_start_journal_clicked` | Existing OPEN YOUR JOURNAL / ADD A MEMORY / START YOUR STORY / MAKE YOUR FIRST MEMORY CTAs; source distinguishes placement |
+| `hero_start_journal_clicked` | START YOUR JOURNAL / OPEN YOUR JOURNAL / ADD A MEMORY / START YOUR STORY / MAKE YOUR FIRST MEMORY CTAs; source distinguishes placement |
 | `journal_opened` | A journal modal opens, including after saving from the homepage composer |
 | `memory_editor_opened` | An editor opens, or the homepage composer gains focus |
 | `memory_created` | A new guest/cloud memory saves successfully, including successful imports |
@@ -35,6 +35,11 @@ are captured. The first touch persists, including a direct first visit.
 | `guest_memories_import_started`, `guest_memories_import_completed` | Import attempt / successful completion with a count |
 | `beta_feedback_submitted` | Feedback saves successfully |
 | `returning_visitor` | Existing browser returns after at least 30 minutes since its last tracked interaction |
+
+First-time visitors can use the five-step first-memory guide. It uses the same
+save handler and conversion events as the regular editor. The success message
+fires only after saving; it sends no additional conversion event. Its local
+completion flags are independent of analytics opt-outs and contain only booleans.
 
 `momento_session_id` is a random UUID reused across browser visits, **not** a
 unique person or a new session per visit. Storage failure falls back to memory

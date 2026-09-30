@@ -28,14 +28,18 @@ export default function Hero() {
   const [notice,setNotice] = useState('');
   const [busy,setBusy] = useState(false);
   const [panel,setPanel] = useState<Panel>(null);
-  const [studioInitial,setStudioInitial] = useState<'list'|'editor'>('list');
+  const [studioInitial,setStudioInitial] = useState<'list'|'editor'|'start'>('list');
   const [mobileMenu,setMobileMenu] = useState(false);
   const [useBackupVideo,setUseBackupVideo] = useState(false);
-  const openJournal = (initial:'list'|'editor'='list',source:AnalyticsSource='composer') => {
+  const openJournal = (initial:'list'|'editor'|'start'='list',source:AnalyticsSource='composer') => {
     if(panel!=='journal')trackEvent('journal_opened',{source,mode:store.user?'cloud':'guest'});
     setStudioInitial(initial);setPanel('journal');setMobileMenu(false);
   };
-  const startComposer=(source:AnalyticsSource)=>{trackEvent('hero_start_journal_clicked',{source});focusComposer();};
+  const startComposer=(source:AnalyticsSource)=>{
+    trackEvent('hero_start_journal_clicked',{source});
+    if(!store.ready||store.loading||store.canGuideFirstMemory)openJournal('start',source);
+    else focusComposer();
+  };
   useEffect(() => {
     document.body.style.overflow = panel ? 'hidden' : '';
     return () => {document.body.style.overflow = '';};
@@ -122,7 +126,7 @@ export default function Hero() {
             <div className="prompt-bottom"><div className="prompt-attach"><button className="upload-circle" type="button" onClick={() => fileRef.current?.click()} disabled={busy} aria-label="Attach a photograph" title="Attach a photograph"><Upload size={18} strokeWidth={1.8}/></button>{composePhotos.length>0 && <span className="attached-name"><Paperclip size={13}/>{composePhotos.length} {composePhotos.length===1?'PHOTO':'PHOTOS'} <button className="remove-attachments" type="button" onClick={()=>setComposePhotos([])} aria-label="Remove attached photographs"><X size={12}/></button></span>}<span className="hint-text" id="memory-hint">{store.user?'Saved to your private account':'A moment worth keeping'}</span></div><button className="black-pill save-button" type="button" onClick={() => void saveMemory()} disabled={busy||store.loading}>{busy||store.loading ? 'SAVING...' : 'SAVE MEMORY'} <ArrowUpRight size={15}/></button></div>
           </div>
           {notice && <div role="status" aria-live="polite" className="status-message">{notice}</div>}
-          <button className="open-journal-link" onClick={() => {trackEvent('hero_start_journal_clicked',{source:'hero'});openJournal('list','hero');}}>OPEN YOUR JOURNAL <ArrowUpRight size={14}/></button>
+          <button className="open-journal-link" onClick={() => {trackEvent('hero_start_journal_clicked',{source:'hero'});openJournal('start','hero');}}>{!store.ready||store.canGuideFirstMemory?'START YOUR JOURNAL':'OPEN YOUR JOURNAL'} <ArrowUpRight size={14}/></button>
         </main>
       </div>
       <div className="hero-bottom-text" aria-hidden="true"><span>COLLECTED WITH CARE</span><span>EST. TODAY · MADE TO LAST</span></div>
@@ -199,7 +203,7 @@ export default function Hero() {
 
     <footer className="site-footer paper-surface"><div className="footer-inner"><button className="wordmark" onClick={focusComposer}>momento<span className="wordmark-dot">.</span></button><span>COLLECT THE DAYS. KEEP THE STORIES.</span><div className="footer-links"><button onClick={() => visitSection('keepsakes')}>DISCOVER</button><button onClick={() => visitSection('how-it-works')}>HOW IT WORKS</button><button onClick={() => openJournal('list','footer')}>YOUR JOURNAL <ArrowRight size={14}/></button><button onClick={()=>setPanel('feedback')}>BETA FEEDBACK</button></div></div><div className="footer-small"><span>MADE FOR REMEMBERING ✳</span><span>{store.user?'PRIVATE CLOUD SYNC ENABLED':'YOUR DEVICE FIRST · CLOUD SYNC AFTER SIGN IN'}</span><a href="#home">BACK TO TOP ↑</a></div></footer>
 
-    {panel==='journal'&&<MemoryStudio store={store} initial={studioInitial} onClose={()=>setPanel(null)} onAuth={()=>setPanel('account')}/>}
+    {panel==='journal'&&<MemoryStudio store={store} initial={studioInitial} startingDraft={studioInitial==='start'?{title:'',text,date:store.dateToday(),location:'',photos:composePhotos}:undefined} onFirstSaved={()=>{setText('');setComposePhotos([]);setNotice('Your first memory is tucked away.');}} onClose={()=>setPanel(null)} onAuth={()=>setPanel('account')}/>}
     {panel==='account'&&<AccountDialog store={store} onClose={()=>setPanel(null)}/>}
     {panel==='feedback'&&<BetaDialog store={store} onClose={()=>setPanel(null)} onAuth={()=>setPanel('account')}/>}
   </div>;
